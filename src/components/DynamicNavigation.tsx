@@ -45,7 +45,7 @@ const DynamicNavigation: React.FC<DynamicNavigationProps> = ({
             <p className="text-sm text-muted-foreground">{company.domain}</p>
           </div>
           <Button variant="ghost" size="sm" onClick={onBackToSelection}>
-            Back
+            Logout
           </Button>
         </div>
         
