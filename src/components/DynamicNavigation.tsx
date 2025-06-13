@@ -17,7 +17,7 @@ interface DynamicNavigationProps {
   onBackToSelection: () => void;
 }
 
-const iconMap: { [key: string]: React.ComponentType } = {
+const iconMap: { [key: string]: React.ComponentType<{ className?: string }> } = {
   Users, DollarSign, Heart, TrendingUp, UserPlus, BarChart3, FileText, Brain,
   Factory, CheckCircle, Package, Wrench, Truck, Car, Cpu, TestTube,
   Cog, Activity, AlertTriangle, Zap, Shield, AlertCircle, GraduationCap
