@@ -1,0 +1,19 @@
+
+{
+  "scripts": {
+    "build:host": "vite build --config vite.config.host.ts",
+    "build:employee": "vite build --config src/modules/employee-app/vite.config.ts",
+    "build:analytics": "vite build --config src/modules/analytics-app/vite.config.ts",
+    "build:vehicle": "vite build --config src/modules/vehicle-app/vite.config.ts",
+    "build:design": "vite build --config src/modules/design-app/vite.config.ts",
+    "build:machine": "vite build --config src/modules/machine-app/vite.config.ts",
+    "build:safety": "vite build --config src/modules/safety-app/vite.config.ts",
+    "build:all": "npm run build:host && npm run build:employee && npm run build:analytics && npm run build:vehicle && npm run build:design && npm run build:machine && npm run build:safety",
+    "dev:employee": "vite --config src/modules/employee-app/vite.config.ts",
+    "dev:analytics": "vite --config src/modules/analytics-app/vite.config.ts",
+    "dev:vehicle": "vite --config src/modules/vehicle-app/vite.config.ts",
+    "dev:design": "vite --config src/modules/design-app/vite.config.ts",
+    "dev:machine": "vite --config src/modules/machine-app/vite.config.ts",
+    "dev:safety": "vite --config src/modules/safety-app/vite.config.ts"
+  }
+}
