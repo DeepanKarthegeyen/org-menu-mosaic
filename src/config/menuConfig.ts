@@ -1,5 +1,6 @@
 
 import { Company } from '../types/company';
+import { remoteUrls } from './environmentConfig';
 
 export const menuConfig: Company[] = [
   {
@@ -9,7 +10,7 @@ export const menuConfig: Company[] = [
     remoteApps: [
       {
         name: 'Employee Management',
-        url: 'http://localhost:3001',
+        url: remoteUrls.employeeApp.replace('/assets/remoteEntry.js', ''),
         scope: 'employeeApp',
         module: './EmployeeModule',
         menus: [
@@ -22,7 +23,7 @@ export const menuConfig: Company[] = [
       },
       {
         name: 'HR Analytics',
-        url: 'http://localhost:3002',
+        url: remoteUrls.analyticsApp.replace('/assets/remoteEntry.js', ''),
         scope: 'analyticsApp',
         module: './AnalyticsModule',
         menus: [
@@ -40,7 +41,7 @@ export const menuConfig: Company[] = [
     remoteApps: [
       {
         name: 'Vehicle Production',
-        url: 'http://localhost:3003',
+        url: remoteUrls.vehicleApp.replace('/assets/remoteEntry.js', ''),
         scope: 'vehicleApp',
         module: './VehicleModule',
         menus: [
@@ -53,7 +54,7 @@ export const menuConfig: Company[] = [
       },
       {
         name: 'Design Studio',
-        url: 'http://localhost:3004',
+        url: remoteUrls.designApp.replace('/assets/remoteEntry.js', ''),
         scope: 'designApp',
         module: './DesignModule',
         menus: [
@@ -71,7 +72,7 @@ export const menuConfig: Company[] = [
     remoteApps: [
       {
         name: 'Machine Operations',
-        url: 'http://localhost:3005',
+        url: remoteUrls.machineApp.replace('/assets/remoteEntry.js', ''),
         scope: 'machineApp',
         module: './MachineModule',
         menus: [
@@ -83,7 +84,7 @@ export const menuConfig: Company[] = [
       },
       {
         name: 'Safety Systems',
-        url: 'http://localhost:3006',
+        url: remoteUrls.safetyApp.replace('/assets/remoteEntry.js', ''),
         scope: 'safetyApp',
         module: './SafetyModule',
         menus: [

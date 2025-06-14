@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { federation } from '@module-federation/vite';
+import { remoteUrls } from './src/config/environmentConfig';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -18,12 +19,12 @@ export default defineConfig(({ mode }) => ({
       name: 'host-app',
       filename: 'remoteEntry.js',
       remotes: {
-        employeeApp: 'http://localhost:3001/assets/remoteEntry.js',
-        analyticsApp: 'http://localhost:3002/assets/remoteEntry.js',
-        vehicleApp: 'http://localhost:3003/assets/remoteEntry.js',
-        designApp: 'http://localhost:3004/assets/remoteEntry.js',
-        machineApp: 'http://localhost:3005/assets/remoteEntry.js',
-        safetyApp: 'http://localhost:3006/assets/remoteEntry.js',
+        employeeApp: remoteUrls.employeeApp,
+        analyticsApp: remoteUrls.analyticsApp,
+        vehicleApp: remoteUrls.vehicleApp,
+        designApp: remoteUrls.designApp,
+        machineApp: remoteUrls.machineApp,
+        safetyApp: remoteUrls.safetyApp,
       },
       shared: {
         react: { 
