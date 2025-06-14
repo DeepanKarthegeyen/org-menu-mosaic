@@ -29,18 +29,19 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
     try {
       console.log(`Loading remote module: ${app.scope}/${app.module}`);
       
-      // Dynamic import of the remote module
+      // Dynamic import of the remote module with proper error handling
       const module = await import(/* @vite-ignore */ `${app.scope}/${app.module}`);
       
-      if (module.default) {
+      if (module && module.default) {
         setRemoteComponent(() => module.default);
         console.log(`Successfully loaded ${app.name} module`);
       } else {
         throw new Error(`No default export found in ${app.scope}/${app.module}`);
       }
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       console.error(`Failed to load remote module ${app.scope}/${app.module}:`, err);
-      setError(`Failed to load ${app.name} module. Make sure the remote app is running on ${app.url}`);
+      setError(`Failed to load ${app.name} module. Make sure the remote app is running on ${app.url}. Error: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -89,6 +90,7 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
               <li>Each remote app should run on its configured URL</li>
               <li>Remote apps should expose their modules via Module Federation</li>
               <li>Check that the remote app is running and accessible</li>
+              <li>Verify CORS settings if accessing from different domains</li>
             </ul>
           </AlertDescription>
         </Alert>

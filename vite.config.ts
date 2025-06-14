@@ -13,8 +13,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === 'development' && componentTagger(),
     federation({
       name: 'host-app',
       filename: 'remoteEntry.js',
@@ -27,8 +26,14 @@ export default defineConfig(({ mode }) => ({
         safetyApp: 'http://localhost:3006/assets/remoteEntry.js',
       },
       shared: {
-        react: { singleton: true },
-        'react-dom': { singleton: true },
+        react: { 
+          singleton: true,
+          requiredVersion: '^18.3.1'
+        },
+        'react-dom': { 
+          singleton: true,
+          requiredVersion: '^18.3.1'
+        },
       },
     }),
   ].filter(Boolean),
@@ -41,5 +46,16 @@ export default defineConfig(({ mode }) => ({
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
+    rollupOptions: {
+      external: (id) => {
+        // Don't bundle remote modules
+        return id.includes('employeeApp') || 
+               id.includes('analyticsApp') || 
+               id.includes('vehicleApp') || 
+               id.includes('designApp') || 
+               id.includes('machineApp') || 
+               id.includes('safetyApp');
+      }
+    }
   },
 }));
