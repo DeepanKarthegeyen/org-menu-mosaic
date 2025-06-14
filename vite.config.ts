@@ -1,7 +1,9 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { federation } from '@module-federation/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,10 +15,31 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === 'development' &&
     componentTagger(),
+    federation({
+      name: 'host-app',
+      filename: 'remoteEntry.js',
+      remotes: {
+        employeeApp: 'http://localhost:3001/assets/remoteEntry.js',
+        analyticsApp: 'http://localhost:3002/assets/remoteEntry.js',
+        vehicleApp: 'http://localhost:3003/assets/remoteEntry.js',
+        designApp: 'http://localhost:3004/assets/remoteEntry.js',
+        machineApp: 'http://localhost:3005/assets/remoteEntry.js',
+        safetyApp: 'http://localhost:3006/assets/remoteEntry.js',
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true },
+      },
+    }),
   ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+  },
+  build: {
+    target: 'esnext',
+    minify: false,
+    cssCodeSplit: false,
   },
 }));
