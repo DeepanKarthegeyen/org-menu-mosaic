@@ -5,6 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 
+// Import mock modules as fallbacks
+import { EmployeeModule, AnalyticsModule, VehicleModule } from '../mock-remotes';
+
 interface RemoteAppLoaderProps {
   app: RemoteApp;
   selectedMenuItem: MenuItem | null;
@@ -14,6 +17,7 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
   const [RemoteComponent, setRemoteComponent] = useState<React.ComponentType<any> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [usingMockModule, setUsingMockModule] = useState(false);
 
   useEffect(() => {
     if (selectedMenuItem) {
@@ -21,10 +25,24 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
     }
   }, [selectedMenuItem, app]);
 
+  const getMockModule = (appName: string) => {
+    const mockModules: { [key: string]: React.ComponentType<any> } = {
+      'Employee Management': EmployeeModule,
+      'HR Analytics': AnalyticsModule,
+      'Vehicle Production': VehicleModule,
+      'Design Studio': VehicleModule, // Using VehicleModule as fallback
+      'Machine Operations': VehicleModule, // Using VehicleModule as fallback
+      'Safety Systems': VehicleModule, // Using VehicleModule as fallback
+    };
+    
+    return mockModules[appName] || null;
+  };
+
   const loadRemoteModule = async () => {
     setLoading(true);
     setError(null);
     setRemoteComponent(null);
+    setUsingMockModule(false);
 
     try {
       console.log(`Loading remote module: ${app.scope}/${app.module}`);
@@ -41,7 +59,16 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
       console.error(`Failed to load remote module ${app.scope}/${app.module}:`, err);
-      setError(`Failed to load ${app.name} module. Make sure the remote app is running on ${app.url}. Error: ${errorMessage}`);
+      
+      // Try to load mock module as fallback
+      const mockModule = getMockModule(app.name);
+      if (mockModule) {
+        setRemoteComponent(() => mockModule);
+        setUsingMockModule(true);
+        console.log(`Using mock module for ${app.name}`);
+      } else {
+        setError(`Failed to load ${app.name} module. Make sure the remote app is running on ${app.url}. Error: ${errorMessage}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -101,6 +128,13 @@ const RemoteAppLoader: React.FC<RemoteAppLoaderProps> = ({ app, selectedMenuItem
   if (RemoteComponent) {
     return (
       <div className="flex-1">
+        {usingMockModule && (
+          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4 mx-6 mt-6">
+            <p className="text-sm">
+              <strong>Mock Mode:</strong> Using local mock module. Start the remote app on {app.url} to use the actual module.
+            </p>
+          </div>
+        )}
         <Suspense fallback={
           <div className="flex items-center justify-center h-full">
             <Loader2 className="w-8 h-8 animate-spin" />
